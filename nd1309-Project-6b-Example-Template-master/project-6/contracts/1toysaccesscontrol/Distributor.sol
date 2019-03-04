@@ -7,7 +7,8 @@ import "./AccessControl.sol";
 contract Distributor {
 
   // Define 2 events, one for Adding, and other for Removing
-
+  event added();
+  event removed();
   // Define a struct 'distributors' by inheriting from 'AccessControl' library, struct Role
 
   // In the constructor make the address that deploys this contract the 1st distributor

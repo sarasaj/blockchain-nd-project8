@@ -7,7 +7,8 @@ import "./AccessControl.sol";
 contract Consumer{
 
   // Define 2 events, one for Adding, and other for Removing
-
+  event added();
+  event removed();
   // Define a struct 'consumers' by inheriting from 'AccessControl' library, struct Role
 
   // In the constructor make the address that deploys this contract the 1st consumer

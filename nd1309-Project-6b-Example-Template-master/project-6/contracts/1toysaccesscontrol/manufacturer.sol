@@ -1,23 +1,27 @@
 pragma solidity ^0.4.24;
 
-// Import the library 'Roles'
+// Import the library 'AccessControl'
 import "./AccessControl.sol";
 
-// Define a contract 'RetailerRole' to manage this role - add, remove, check
+// Define a contract 'manufacturer' to manage this role - add, remove, check
 contract manufacturer{
 
+  address mowner;
   // Define 2 events, one for Adding, and other for Removing
-
+  event added();
+  event removed();
   // Define a struct 'manufacturer' by inheriting from 'AccessControl' library, struct Role
+struct manufacturer is role {
 
+}
   // In the constructor make the address that deploys this contract the 1st retailer
   constructor() public {
-
+    mowner = msg.sender;
   }
 
   // Define a modifier that checks to see if msg.sender has the appropriate role
-  modifier onlyManufacturer() {
-
+  modifier onlyManufacturer(address account) {
+    require(msg.sender == mowner);
     _;
   }
 
