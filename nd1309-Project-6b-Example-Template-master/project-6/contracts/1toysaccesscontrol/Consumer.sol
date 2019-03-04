@@ -5,7 +5,7 @@ import "./AccessControl.sol";
 
 // Define a contract 'ConsumerRole' to manage this role - add, remove, check
 contract Consumer{
-
+  address ConsumerAddress;
   // Define 2 events, one for Adding, and other for Removing
   event added();
   event removed();
@@ -13,7 +13,7 @@ contract Consumer{
 
   // In the constructor make the address that deploys this contract the 1st consumer
   constructor() public {
-
+    ConsumerAddress = msg.sender;
   }
 
   // Define a modifier that checks to see if msg.sender has the appropriate role

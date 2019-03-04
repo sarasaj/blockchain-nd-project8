@@ -1,6 +1,8 @@
 pragma solidity ^0.4.24;
+
+import "./AccessControl.sol";
 // Define a contract 'ToyBase'
-contract ToyBase {
+contract ToyBase is AccessControl{
 
   // Define 'owner'
   address owner;

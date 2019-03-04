@@ -3,7 +3,7 @@ pragma solidity ^0.4.24;
 /// Provides basic authorization control
 contract Ownable {
     address private origOwner;
-
+    address private newOwner;
     // Define an Event
     event TransferOwnership(address indexed oldOwner, address indexed newOwner);
 

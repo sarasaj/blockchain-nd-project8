@@ -4,30 +4,34 @@ pragma solidity ^0.4.24;
 import "./AccessControl.sol";
 
 // Define a contract 'manufacturer' to manage this role - add, remove, check
-contract manufacturer{
+contract manufacturer {
 
-  address mowner;
+  address manufacturerAddress;
   // Define 2 events, one for Adding, and other for Removing
   event added();
   event removed();
-  // Define a struct 'manufacturer' by inheriting from 'AccessControl' library, struct Role
+  // Define a struct 'manufacturers' by inheriting from 'AccessControl' library, struct Role
 struct manufacturer is role {
 
 }
   // In the constructor make the address that deploys this contract the 1st retailer
   constructor() public {
-    mowner = msg.sender;
+    manufacturerAddress = msg.sender;
   }
 
   // Define a modifier that checks to see if msg.sender has the appropriate role
-  modifier onlyManufacturer(address account) {
-    require(msg.sender == mowner);
+  modifier onlyManufacturer() {
+    require(msg.sender == manufacturerAddress);
     _;
   }
 
   // Define a function 'isManufacturer' to check this role
-  function isManufacturer(address account) public view returns (bool) {
-
+  function isManufacturer(address account) public view onlyManufacturer(account) returns (bool) {
+     if(account == manufacturerAddress){
+       return true;
+     }else {
+       return false;
+     }
   }
 
   // Define a function 'addManufacturer' that adds this role
@@ -40,12 +44,12 @@ struct manufacturer is role {
 
   }
 
-  // Define an internal function '_addManufacturer' to add this role, called by 'addRetailer'
+  // Define an internal function '_addManufacturer' to add this role, called by 'addManufacturer'
   function _addManufacturer(address account) internal {
 
   }
 
-  // Define an internal function '_removeManufacturer' to remove this role, called by 'removeRetailer'
+  // Define an internal function '_removeManufacturer' to remove this role, called by 'renounceManufacturer'
   function _removeManufacturer(address account) internal {
 
   }

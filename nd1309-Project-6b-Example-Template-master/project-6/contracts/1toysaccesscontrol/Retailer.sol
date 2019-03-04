@@ -6,6 +6,8 @@ import "./AccessControl.sol";
 // Define a contract 'RetailerRole' to manage this role - add, remove, check
 contract Retailer{
 
+  address retailerAddress;
+
   // Define 2 events, one for Adding, and other for Removing
   event added();
   event removed();
@@ -13,7 +15,7 @@ contract Retailer{
 
   // In the constructor make the address that deploys this contract the 1st retailer
   constructor() public {
-
+    retailerAddress = msg.sender;
   }
 
   // Define a modifier that checks to see if msg.sender has the appropriate role
