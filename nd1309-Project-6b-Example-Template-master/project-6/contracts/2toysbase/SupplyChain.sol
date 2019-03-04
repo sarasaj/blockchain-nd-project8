@@ -165,7 +165,16 @@ contract SupplyChain {
      string  _originManufactureLatitude, string  _originManufactureLongitude, string  _productNotes) public
   {
     // Add the new item as part of Harvest
-
+    var newitem = items[_upc] ;
+    newitem.sku = sku;
+    newitem.upc = _upc;
+    newitem.originManufactureID = _originManufactureID
+    newitem.originManufactureName = _originManufactureName;
+    newitem.originManufactureInformation = _originManufactureInformation;
+    newitem.originManufactureLatitude = _originManufactureLatitude;
+    newitem.originManufactureLongitude = _originManufactureLongitude;
+    newitem.productNotes= _productNotes;
+    newitem.itemState = State.designed;
     // Increment sku
     sku = sku + 1;
     // Emit the appropriate event
@@ -175,10 +184,10 @@ contract SupplyChain {
   // Define a function 'approveItem' that allows a farmer to mark an item 'Approved'
   function approveItem(uint _upc) public
   // Call modifier to check if upc has passed previous supply chain stage
-  designed,
+  designed(_upc),
   // Call modifier to verify caller of this function
   onlyOwner,
-  verifyCaller
+  verifyCaller(owner)
   {
     // Update the appropriate fields
     items[_upc].itemState = State.Approved;
@@ -188,10 +197,10 @@ contract SupplyChain {
   // Define a function 'approveItem' that allows a farmer to mark an item 'underProduction'
   function underProductionItem(uint _upc) public
   // Call modifier to check if upc has passed previous supply chain stage
-  designed, approved
+  designed(_upc), approved(_upc),
   // Call modifier to verify caller of this function
   onlyOwner,
-  verifyCaller
+  verifyCaller(owner)
   {
     // Update the appropriate fields
     items[_upc].itemState = State.UnderProduction;
@@ -201,9 +210,9 @@ contract SupplyChain {
   // Define a function 'packItem' that allows a farmer to mark an item 'Packed'
   function packItem(uint _upc) public
   // Call modifier to check if upc has passed previous supply chain stage
-  designed, approved,UnderProduction,
+  designed(_upc), approved(_upc), UnderProduction(_upc),
   // Call modifier to verify caller of this function
-  verifyCaller
+  verifyCaller(owner)
   {
     // Update the appropriate fields
     items[_upc].itemState = State.Packed;
@@ -214,9 +223,9 @@ contract SupplyChain {
   // Define a function 'sellItem' that allows a farmer to mark an item 'ForSale'
   function sellItem(uint _upc, uint _price) public
   // Call modifier to check if upc has passed previous supply chain stage
-  designed, approved, UnderProduction, packed
+  designed(_upc), approved(_upc), UnderProduction(_upc), packed(_upc)
   // Call modifier to verify caller of this function
-  verifyCaller
+  verifyCaller(owner)
   {
     // Update the appropriate fields
     items[_upc].itemState = State.ForSale;
@@ -229,20 +238,26 @@ contract SupplyChain {
   // and any excess ether sent is refunded back to the buyer
   function buyItem(uint _upc) public payable
     // Call modifier to check if upc has passed previous supply chain stage
-    designed, approved, UnderProduction, packed , forSale
+    designed(_upc), approved(_upc), UnderProduction(_upc), packed(_upc) , forSale(_upc)
     // Call modifer to check if buyer has paid enough
-    paidEnough,
+    paidEnough(msg.value) ,
     // Call modifer to send any excess ether back to buyer
-    checkValue
+    checkValue(_upc)
     {
 
     // Update the appropriate fields - ownerID, distributorID, itemState
     items[_upc].ownerID = message.sender;
     items[_upc].distributorID = message.sender;
     items[_upc].itemState = State.Sold;
-    // Transfer money to farmer
+    // Transfer money to manufacturer
 
+    uint256 toyCost =item[_upc].productPrice;
+    address manufactureAdress = item[_upc].originManufactureID;
+    require(msg.value >toyCost);
+
+    manufactureAdress.transfer(toyCost);
     // emit the appropriate event
+    emit Sold();
 
   }
 
