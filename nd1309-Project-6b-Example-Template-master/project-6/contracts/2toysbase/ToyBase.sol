@@ -201,7 +201,8 @@ contract ToyBase is AccessControl{
   // Define a function 'sendToProduction' that allows a farmer to mark an item 'underProduction'
   function sendToProduction(uint _upc) public
   // Call modifier to check if upc has passed previous supply chain stage
-  designed(_upc) approved(_upc)
+  //designed(_upc) 
+  approved(_upc)
   // Call modifier to verify caller of this function
   onlyOwner
   verifyCaller(owner)
@@ -214,7 +215,8 @@ contract ToyBase is AccessControl{
   // Define a function 'packToy' that allows a farmer to mark an item 'Packed'
   function packToy(uint _upc) public
   // Call modifier to check if upc has passed previous supply chain stage
-  designed(_upc) approved(_upc) UnderProduction(_upc)
+  //designed(_upc) approved(_upc) 
+  UnderProduction(_upc)
   // Call modifier to verify caller of this function
   verifyCaller(owner)
   {
@@ -227,7 +229,8 @@ contract ToyBase is AccessControl{
   // Define a function 'sellToy' that allows a farmer to mark an item 'ForSale'
   function sellToy(uint _upc, uint _price) public
   // Call modifier to check if upc has passed previous supply chain stage
-  designed(_upc) approved(_upc) UnderProduction(_upc), packed(_upc)
+  //designed(_upc) approved(_upc) UnderProduction(_upc)
+  packed(_upc)
   // Call modifier to verify caller of this function
   verifyCaller(owner)
   {
@@ -242,9 +245,11 @@ contract ToyBase is AccessControl{
   // and any excess ether sent is refunded back to the buyer
   function buyToy(uint _upc) public payable
     // Call modifier to check if upc has passed previous supply chain stage
-    designed(_upc) approved(_upc) UnderProduction(_upc) packed(_upc)  forSale(_upc)
+    //designed(_upc) approved(_upc) UnderProduction(_upc) 
+    packed(_upc)  
+    forSale(_upc)
     // Call modifer to check if buyer has paid enough
-    paidEnough(msg.value) ,
+    paidEnough(msg.value)
     // Call modifer to send any excess ether back to buyer
     checkValue(_upc)
     {
@@ -269,7 +274,8 @@ contract ToyBase is AccessControl{
   // Use the above modifers to check if the item is sold
   function shipToy(uint _upc) public
     // Call modifier to check if upc has passed previous supply chain stage
-    designed(_upc) approved(_upc) UnderProduction(_upc) packed(_upc)  forSale(_upc) sold(_upc)
+    //designed(_upc) approved(_upc) UnderProduction(_upc)   forSale(_upc) 
+    sold(_upc) packed(_upc)
     // Call modifier to verify caller of this function
     verifyCaller(owner)
     {
@@ -283,7 +289,8 @@ contract ToyBase is AccessControl{
   // Use the above modifiers to check if the item is shipped
   function receiveToy(uint _upc) public
     // Call modifier to check if upc has passed previous supply chain stage
-    designed(_upc) approved(_upc) UnderProduction(_upc) packed(_upc)  forSale(_upc) sold(_upc) shipped(_upc)
+    //designed(_upc) approved(_upc) UnderProduction(_upc) packed(_upc)  forSale(_upc) sold(_upc) 
+    shipped(_upc)
     // Access Control List enforced by calling Smart Contract / DApp
 
     {
@@ -301,7 +308,10 @@ contract ToyBase is AccessControl{
 
   function purchaseToy(uint _upc) public
     // Call modifier to check if upc has passed previous supply chain stage
-    designed(_upc) approved(_upc) UnderProduction(_upc) packed(_upc)  forSale(_upc) sold(_upc) shipped(_upc)  received(_upc)
+    //designed(_upc) approved(_upc) UnderProduction(_upc) packed(_upc)  forSale(_upc) sold(_upc) shipped(_upc)  
+    received(_upc)
+    paidEnough(msg.value)
+	checkValue(_upc)
     // Access Control List enforced by calling Smart Contract / DApp
     {
     // Update the appropriate fields - ownerID, consumerID, itemState
