@@ -2,7 +2,7 @@ pragma solidity ^0.4.24;
 
 import "./AccessControl.sol";
 // Define a contract 'ToyBase'
-contract ToyBase is AccessControl{
+contract ToyBase is AccessControl {
 
   // Define 'owner'
   address owner;
@@ -318,6 +318,15 @@ contract ToyBase is AccessControl{
     toys[_upc].ownerID = message.sender;
     toys[_upc].retailerID = message.sender;
     toys[_upc].itemState = State.Received;
+
+    // Transfer money to manufacturer
+
+    uint256 toyCost =item[_upc].productPrice;
+    address retailerAdress = item[_upc].retailerID;
+    require(msg.value >toyCost);
+
+    retailerAdress.transfer(toyCost);
+
     // Emit the appropriate event
     emit Purchased();
   }
