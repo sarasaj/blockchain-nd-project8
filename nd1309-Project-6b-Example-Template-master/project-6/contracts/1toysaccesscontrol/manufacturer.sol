@@ -11,9 +11,8 @@ contract manufacturer {
   event added();
   event removed();
   // Define a struct 'manufacturers' by inheriting from 'AccessControl' library, struct Role
-struct manufacturer is role {
-
-}
+  //https://solidity.readthedocs.io/en/develop/contracts.html#libraries
+  AccessControl.Role manufacturers;
   // In the constructor make the address that deploys this contract the 1st retailer
   constructor() public {
     manufacturerAddress = msg.sender;
@@ -27,30 +26,33 @@ struct manufacturer is role {
 
   // Define a function 'isManufacturer' to check this role
   function isManufacturer(address account) public view onlyManufacturer(account) returns (bool) {
-     if(account == manufacturerAddress){
-       return true;
-     }else {
-       return false;
-     }
+     // if(account == manufacturerAddress){
+     //   return true;
+     // }else {
+     //   return false;
+     // }
+
+     return AccessControl.has(manufacturers, account);
+
   }
 
   // Define a function 'addManufacturer' that adds this role
-  function addManufacturer(address account) public onlyRetailer {
-
+  function addManufacturer(address account) public onlyManufacturer {
+    _addManufacturer(account);
   }
 
   // Define a function 'renounceManufacturer' to renounce this role
   function renounceManufacturer() public {
-
+    _removeManufacturer(account);
   }
 
   // Define an internal function '_addManufacturer' to add this role, called by 'addManufacturer'
   function _addManufacturer(address account) internal {
-
+    return AccessControl.add(manufacturers, account);
   }
 
   // Define an internal function '_removeManufacturer' to remove this role, called by 'renounceManufacturer'
   function _removeManufacturer(address account) internal {
-
+    return AccessControl.remove(manufacturers, account);
   }
 }
