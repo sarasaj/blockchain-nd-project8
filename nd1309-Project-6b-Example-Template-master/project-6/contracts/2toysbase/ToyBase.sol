@@ -1,8 +1,8 @@
 pragma solidity ^0.4.24;
 
-import "./AccessControl.sol";
+//import "./AccessControl.sol";
 // Define a contract 'ToyBase'
-contract ToyBase is AccessControl {
+contract ToyBase {
 
   // Define 'owner'
   address owner;
@@ -94,7 +94,7 @@ contract ToyBase is AccessControl {
 
   // Define a modifier that checks if an item.state of a upc is Designed
   modifier designed(uint _upc) {
-    require(toys[_upc].itemState == State.designed);
+    require(toys[_upc].itemState == State.Designed);
     _;
   }
 
@@ -167,16 +167,16 @@ contract ToyBase is AccessControl {
      string  _originManufactureLatitude, string  _originManufactureLongitude, string  _productNotes) public
   {
     // Add the new item as part of toys manufactured
-    var newitem = toys[_upc]; //adding a new item to the mapping
+    Toy storage newitem = toys[_upc]; //adding a new item to the mapping
     newitem.sku = sku;
     newitem.upc = _upc;
-    newitem.originManufactureID = _originManufactureID
+    newitem.originManufactureID = _originManufactureID;
     newitem.originManufactureName = _originManufactureName;
     newitem.originManufactureInformation = _originManufactureInformation;
     newitem.originManufactureLatitude = _originManufactureLatitude;
     newitem.originManufactureLongitude = _originManufactureLongitude;
     newitem.productNotes= _productNotes;
-    newitem.itemState = State.designed;
+    newitem.itemState = State.Designed;
     newitem.productID = sku+_upc;
     //newitem.productPrice ;
     // Increment sku
@@ -255,13 +255,13 @@ contract ToyBase is AccessControl {
     {
 
     // Update the appropriate fields - ownerID, distributorID, itemState
-    toys[_upc].ownerID = message.sender;
-    toys[_upc].distributorID = message.sender;
+    toys[_upc].ownerID = msg.sender;
+    toys[_upc].distributorID = msg.sender;
     toys[_upc].itemState = State.Sold;
     // Transfer money to manufacturer
 
-    uint256 toyCost =item[_upc].productPrice;
-    address manufactureAdress = item[_upc].originManufactureID;
+    uint256 toyCost =toys[_upc].productPrice;
+    address manufactureAdress = toys[_upc].originManufactureID;
     require(msg.value >toyCost);
 
     manufactureAdress.transfer(toyCost);
@@ -295,8 +295,8 @@ contract ToyBase is AccessControl {
 
     {
     // Update the appropriate fields - ownerID, retailerID, itemState
-    toys[_upc].ownerID = message.sender;
-    toys[_upc].retailerID = message.sender;
+    toys[_upc].ownerID = msg.sender;
+    toys[_upc].retailerID = msg.sender;
     toys[_upc].itemState = State.Received;
     // Emit the appropriate event
     emit Received();
@@ -315,14 +315,14 @@ contract ToyBase is AccessControl {
     // Access Control List enforced by calling Smart Contract / DApp
     {
     // Update the appropriate fields - ownerID, consumerID, itemState
-    toys[_upc].ownerID = message.sender;
-    toys[_upc].retailerID = message.sender;
+    toys[_upc].ownerID = msg.sender;
+    toys[_upc].retailerID = msg.sender;
     toys[_upc].itemState = State.Received;
 
     // Transfer money to manufacturer
 
-    uint256 toyCost =item[_upc].productPrice;
-    address retailerAdress = item[_upc].retailerID;
+    uint256 toyCost =toys[_upc].productPrice;
+    address retailerAdress = toys[_upc].retailerID;
     require(msg.value >toyCost);
 
     retailerAdress.transfer(toyCost);
@@ -337,11 +337,11 @@ contract ToyBase is AccessControl {
   uint    itemSKU,
   uint    itemUPC,
   address ownerID,
-  address originManufactureID;
-  string  originManufactureName;
-  string  originManufactureInformation;
-  string  originManufactureLatitude;
-  string  originManufactureLongitude;
+  address originManufactureID,
+  string  originManufactureName,
+  string  originManufactureInformation,
+  string  originManufactureLatitude,
+  string  originManufactureLongitude
   )
   {
   // Assign values to the 8 parameters
@@ -376,7 +376,7 @@ contract ToyBase is AccessControl {
   uint    productID,
   string  productNotes,
   uint    productPrice,
-  uint    itemState,
+  Stare    itemState,
   address distributorID,
   address retailerID,
   address consumerID

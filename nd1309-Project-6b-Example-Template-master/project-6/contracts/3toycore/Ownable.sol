@@ -1,9 +1,9 @@
 pragma solidity ^0.4.24;
 
-import "./ToyBase.sol";
+//import "./ToyBase.sol";
 
 /// Provides basic authorization control
-contract Ownable is ToyBase {
+contract Ownable {
     address private origOwner;
     //address private newOwner;
     // Define an Event

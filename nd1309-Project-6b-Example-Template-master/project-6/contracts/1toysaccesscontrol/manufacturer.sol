@@ -25,7 +25,7 @@ contract manufacturer {
   }
 
   // Define a function 'isManufacturer' to check this role
-  function isManufacturer(address account) public view onlyManufacturer(account) returns (bool) {
+  function isManufacturer(address account) public view onlyManufacturer returns (bool) {
      // if(account == manufacturerAddress){
      //   return true;
      // }else {
@@ -39,11 +39,17 @@ contract manufacturer {
   // Define a function 'addManufacturer' that adds this role
   function addManufacturer(address account) public onlyManufacturer {
     _addManufacturer(account);
+    emit added();
   }
 
   // Define a function 'renounceManufacturer' to renounce this role
   function renounceManufacturer() public {
+
+  }
+
+  function removeManufacturer(address account) public {
     _removeManufacturer(account);
+    emit removed();
   }
 
   // Define an internal function '_addManufacturer' to add this role, called by 'addManufacturer'
