@@ -196,7 +196,7 @@ contract ToyBase {
     // Update the appropriate fields
     toys[_upc].itemState = State.Approved;
     // Emit the appropriate event
-    emit Approved(sku);
+    emit Approved(_upc);
   }
   // Define a function 'sendToProduction' that allows a farmer to mark an item 'underProduction'
   function sendToProduction(uint _upc) public
@@ -210,20 +210,20 @@ contract ToyBase {
     // Update the appropriate fields
     toys[_upc].itemState = State.UnderProduction;
     // Emit the appropriate event
-    emit UnderProduction(sku);
+    emit UnderProduction(_upc);
   }
   // Define a function 'packToy' that allows a farmer to mark an item 'Packed'
   function packToy(uint _upc) public
   // Call modifier to check if upc has passed previous supply chain stage
   //designed(_upc) approved(_upc) 
-  UnderProduction(_upc)
+  emit UnderProduction(_upc)
   // Call modifier to verify caller of this function
   verifyCaller(owner)
   {
     // Update the appropriate fields
     toys[_upc].itemState = State.Packed;
     // Emit the appropriate event
- emit Packed();
+ emit Packed(_upc);
   }
 
   // Define a function 'sellToy' that allows a farmer to mark an item 'ForSale'
@@ -237,7 +237,7 @@ contract ToyBase {
     // Update the appropriate fields
     toys[_upc].itemState = State.ForSale;
     // Emit the appropriate event
-    emit ForSale();
+    emit ForSale(_upc);
   }
 
   // Define a function 'buyToy' that allows the disributor to mark an item 'Sold'
@@ -266,7 +266,7 @@ contract ToyBase {
 
     manufactureAdress.transfer(toyCost);
     // emit the appropriate event
-    emit Sold();
+    emit Sold(_upc);
 
   }
 
@@ -282,7 +282,7 @@ contract ToyBase {
     // Update the appropriate fields
     toys[_upc].itemState = State.Shipped;
     // Emit the appropriate event
-    emit Shipped();
+    emit Shipped(_upc);
   }
 
   // Define a function 'receiveToy' that allows the retailer to mark an item 'Received'
@@ -299,7 +299,7 @@ contract ToyBase {
     toys[_upc].retailerID = msg.sender;
     toys[_upc].itemState = State.Received;
     // Emit the appropriate event
-    emit Received();
+    emit Received(_upc);
 
   }
 
@@ -328,7 +328,7 @@ contract ToyBase {
     retailerAdress.transfer(toyCost);
 
     // Emit the appropriate event
-    emit Purchased();
+    emit Purchased(_upc);
   }
 
   // Define a function 'fetchToyBufferOne' that fetches the data
