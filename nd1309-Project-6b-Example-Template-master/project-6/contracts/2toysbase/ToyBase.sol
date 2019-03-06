@@ -216,7 +216,7 @@ contract ToyBase {
   function packToy(uint _upc) public
   // Call modifier to check if upc has passed previous supply chain stage
   //designed(_upc) approved(_upc) 
-  emit UnderProduction(_upc)
+  underProduction(_upc)
   // Call modifier to verify caller of this function
   verifyCaller(owner)
   {
@@ -236,6 +236,7 @@ contract ToyBase {
   {
     // Update the appropriate fields
     toys[_upc].itemState = State.ForSale;
+    toys[_upc].productPrice =  _price;
     // Emit the appropriate event
     emit ForSale(_upc);
   }
@@ -306,7 +307,7 @@ contract ToyBase {
   // Define a function 'purchaseToy' that allows the consumer to mark an item 'Purchased'
   // Use the above modifiers to check if the item is received
 
-  function purchaseToy(uint _upc) public
+  function purchaseToy(uint _upc) public payable
     // Call modifier to check if upc has passed previous supply chain stage
     //designed(_upc) approved(_upc) UnderProduction(_upc) packed(_upc)  forSale(_upc) sold(_upc) shipped(_upc)  
     received(_upc)
@@ -323,7 +324,7 @@ contract ToyBase {
 
     uint256 toyCost =toys[_upc].productPrice;
     address retailerAdress = toys[_upc].retailerID;
-    require(msg.value >toyCost);
+    //require(msg.value >toyCost);
 
     retailerAdress.transfer(toyCost);
 
@@ -376,7 +377,7 @@ contract ToyBase {
   uint    productID,
   string  productNotes,
   uint    productPrice,
-  Stare    itemState,
+  State    itemState,
   address distributorID,
   address retailerID,
   address consumerID
