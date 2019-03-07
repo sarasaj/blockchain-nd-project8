@@ -1,3 +1,18 @@
+#how to compile and test the project 
+## 1 cd to the project-6 folder in sifde the project directory
+example:
+C:\Users\UserName\Documents\GitHub\blockchain-nd-project8\nd1309-Project-6b-Example-Template-master\project-6
+
+## 2 type in you terminal/command line : truffle.cmd compile 
+then : truffle.cmd test .. to test the files 
+
+#project folder struture 
+#go to documantation files folder and yoú will find :
+## 1 UML diagrams 
+## 2 libraries 
+## 3 ipfs 
+## 4 contracts addresses in rinkeby
+
 #AccessControl
 Contains a class for each role and controls the access for each one separately
 

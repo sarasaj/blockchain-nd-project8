@@ -193,7 +193,7 @@ contract ToyBase {
   // Call modifier to check if upc has passed previous supply chain stage
   designed(_upc)
   // Call modifier to verify caller of this function
-  verifyCaller(owner)
+  verifyCaller(toys[_upc].originManufactureID)
   {
     // Update the appropriate fields
     toys[_upc].itemState = State.Approved;
@@ -205,7 +205,7 @@ contract ToyBase {
   // Call modifier to check if upc has passed previous supply chain stage
   approved(_upc)
   // Call modifier to verify caller of this function
-  verifyCaller(owner)
+  verifyCaller(toys[_upc].originManufactureID)
   {
     // Update the appropriate fields
     toys[_upc].itemState = State.UnderProduction;
@@ -217,7 +217,7 @@ contract ToyBase {
   // Call modifier to check if upc has passed previous supply chain stage
   underProduction(_upc)
   // Call modifier to verify caller of this function
-  verifyCaller(owner)
+  verifyCaller(toys[_upc].originManufactureID)
   {
     // Update the appropriate fields
     toys[_upc].itemState = State.Packed;
@@ -230,7 +230,7 @@ contract ToyBase {
   // Call modifier to check if upc has passed previous supply chain stage
   packed(_upc)
   // Call modifier to verify caller of this function
-  verifyCaller(owner)
+  verifyCaller(toys[_upc].originManufactureID)
   {
     // Update the appropriate fields
     toys[_upc].itemState = State.ForSale;
@@ -246,7 +246,7 @@ contract ToyBase {
     // Call modifier to check if upc has passed previous supply chain stage  
     forSale(_upc)
     // Call modifer to check if buyer has paid enough
-    paidEnough(msg.value)
+    paidEnough(toys[_upc].productPrice)
     // Call modifer to send any excess ether back to buyer
     checkValue(_upc)
     {
@@ -272,7 +272,7 @@ contract ToyBase {
     // Call modifier to check if upc has passed previous supply chain stage
     sold(_upc)
     // Call modifier to verify caller of this function
-    verifyCaller(owner)
+    verifyCaller(toys[_upc].originManufactureID)
     {
     // Update the appropriate fields
     toys[_upc].itemState = State.Shipped;
@@ -304,7 +304,7 @@ contract ToyBase {
   function purchaseToy(uint _upc) public payable
     // Call modifier to check if upc has passed previous supply chain stage 
     received(_upc)
-    paidEnough(msg.value)
+    paidEnough(toys[_upc].productPrice)
 	checkValue(_upc)
     // Access Control List enforced by calling Smart Contract / DApp
     {

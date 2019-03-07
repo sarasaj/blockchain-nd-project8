@@ -88,7 +88,7 @@ contract('ToyBase', function(accounts) {
         })
 
         // Mark an item as Processed by calling function processtItem()
-        await toyBase.prototypeToy(upc)
+        await toyBase.prototypeToy(upc,{from: originManufacturerID })
 
         // Retrieve the just now saved item from blockchain by calling function fetchItem()
         const resultBufferTwo = await toyBase.fetchToyBufferTwo.call(upc)
@@ -112,7 +112,7 @@ contract('ToyBase', function(accounts) {
         })
 
         // Mark an item as Processed by calling function processtItem()
-        await toyBase.sendToProduction(upc)
+        await toyBase.sendToProduction(upc,{from: originManufacturerID })
 
         // Retrieve the just now saved item from blockchain by calling function fetchItem()
         const resultBufferTwo = await toyBase.fetchToyBufferTwo.call(upc)
@@ -135,7 +135,7 @@ contract('ToyBase', function(accounts) {
         })
 
         // Mark an item as Processed by calling function processtItem()
-        await toyBase.packToy(upc)
+        await toyBase.packToy(upc,{from: originManufacturerID })
 
         // Retrieve the just now saved item from blockchain by calling function fetchItem()
         const resultBufferTwo = await toyBase.fetchToyBufferTwo.call(upc)
@@ -160,7 +160,7 @@ contract('ToyBase', function(accounts) {
         })
 
         // Mark an item as Processed by calling function processtItem()
-        await toyBase.sellToy(upc,productPrice)
+        await toyBase.sellToy(upc,productPrice,{from: originManufacturerID })
 
         // Retrieve the just now saved item from blockchain by calling function fetchItem()
         const resultBufferTwo = await toyBase.fetchToyBufferTwo.call(upc)
@@ -214,7 +214,7 @@ contract('ToyBase', function(accounts) {
         })
 
         // Mark an item as Processed by calling function processtItem()
-        await toyBase.shipToy(upc)
+        await toyBase.shipToy(upc,{from: originManufacturerID })
 
         // Retrieve the just now saved item from blockchain by calling function fetchItem()
         const resultBufferTwo = await toyBase.fetchToyBufferTwo.call(upc)
