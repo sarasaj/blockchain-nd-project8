@@ -305,7 +305,7 @@ contract ToyBase {
     // Call modifier to check if upc has passed previous supply chain stage 
     received(_upc)
     paidEnough(toys[_upc].productPrice)
-	checkValue(_upc)
+	  checkValue(_upc)
     // Access Control List enforced by calling Smart Contract / DApp
     {
     // Update the appropriate fields - ownerID, consumerID, itemState

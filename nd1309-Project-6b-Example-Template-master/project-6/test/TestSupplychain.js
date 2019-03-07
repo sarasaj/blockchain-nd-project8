@@ -282,7 +282,7 @@ contract('ToyBase', function(accounts) {
     })    
 
     // // 10th Test
-    it("Testing smart contract function fetchToymBufferOne() that allows anyone to fetch item details from blockchain", async() => {
+    it("Testing smart contract function fetchToyBufferOne() that allows anyone to fetch item details from blockchain", async() => {
         const toyBase = await ToyBase.deployed()
 
         // Retrieve the just now saved item from blockchain by calling function fetchItem()
@@ -302,7 +302,7 @@ contract('ToyBase', function(accounts) {
     })
 
     // // 11th Test
-    it("Testing smart contract function fetchItemBufferTwo() that allows anyone to fetch item details from blockchain", async() => {
+    it("Testing smart contract function fetchToyBufferTwo() that allows anyone to fetch item details from blockchain", async() => {
         const toyBase = await ToyBase.deployed()
 
         // Retrieve the just now saved item from blockchain by calling function fetchItem()
