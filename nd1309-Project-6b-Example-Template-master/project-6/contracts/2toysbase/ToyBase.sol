@@ -172,7 +172,7 @@ contract ToyBase {
     
     Toy storage newitem = toys[_upc]; //adding a new item to the mapping
     newitem.upc = _upc;
-    newitem.ownerID = owner;
+    newitem.ownerID = _originManufactureID;
     newitem.originManufactureID = _originManufactureID;
     newitem.originManufactureName = _originManufactureName;
     newitem.originManufactureInformation = _originManufactureInformation;
@@ -243,9 +243,7 @@ contract ToyBase {
   // Use the above defined modifiers to check if the item is available for sale, if the buyer has paid enough,
   // and any excess ether sent is refunded back to the buyer
   function buyToy(uint _upc) public payable
-    // Call modifier to check if upc has passed previous supply chain stage
-    //designed(_upc) approved(_upc) UnderProduction(_upc) 
-    packed(_upc)  
+    // Call modifier to check if upc has passed previous supply chain stage  
     forSale(_upc)
     // Call modifer to check if buyer has paid enough
     paidEnough(msg.value)
@@ -272,8 +270,7 @@ contract ToyBase {
   // Use the above modifers to check if the item is sold
   function shipToy(uint _upc) public
     // Call modifier to check if upc has passed previous supply chain stage
-    //designed(_upc) approved(_upc) UnderProduction(_upc)   forSale(_upc) 
-    sold(_upc) packed(_upc)
+    sold(_upc)
     // Call modifier to verify caller of this function
     verifyCaller(owner)
     {
@@ -287,14 +284,14 @@ contract ToyBase {
   // Use the above modifiers to check if the item is shipped
   function receiveToy(uint _upc) public
     // Call modifier to check if upc has passed previous supply chain stage
-    //designed(_upc) approved(_upc) UnderProduction(_upc) packed(_upc)  forSale(_upc) sold(_upc) 
     shipped(_upc)
     // Access Control List enforced by calling Smart Contract / DApp
 
     {
     // Update the appropriate fields - ownerID, retailerID, itemState
-    toys[_upc].ownerID = msg.sender;
+    
     toys[_upc].retailerID = msg.sender;
+    toys[_upc].ownerID = msg.sender;
     toys[_upc].itemState = State.Received;
     // Emit the appropriate event
     emit Received(_upc);
@@ -305,8 +302,7 @@ contract ToyBase {
   // Use the above modifiers to check if the item is received
 
   function purchaseToy(uint _upc) public payable
-    // Call modifier to check if upc has passed previous supply chain stage
-    //designed(_upc) approved(_upc) UnderProduction(_upc) packed(_upc)  forSale(_upc) sold(_upc) shipped(_upc)  
+    // Call modifier to check if upc has passed previous supply chain stage 
     received(_upc)
     paidEnough(msg.value)
 	checkValue(_upc)
@@ -314,8 +310,8 @@ contract ToyBase {
     {
     // Update the appropriate fields - ownerID, consumerID, itemState
     toys[_upc].ownerID = msg.sender;
-    toys[_upc].retailerID = msg.sender;
-    toys[_upc].itemState = State.Received;
+    toys[_upc].consumerID = msg.sender;
+    toys[_upc].itemState = State.Purchased;
 
     // Transfer money to manufacturer
 
